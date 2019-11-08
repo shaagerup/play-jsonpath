@@ -23,13 +23,10 @@ publishMavenStyle := true
 publishArtifact in Test := false
 
 
-publishTo := {
-  val nexus = "https://oss.sonatype.org/"
-  if (isSnapshot.value)
-    Some("snapshots" at nexus + "content/repositories/snapshots")
-  else
-    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
-}
+credentials += Credentials("Artifactory Realm", "artifactory.cerno.dk", sys.env.get("ARTIFACTORY_USERNAME").mkString, sys.env.get("ARTIFACTORY_PASSWORD").mkString)
+resolvers +=
+  "Artifactory" at "https://artifactory.cerno.dk/artifactory/cerno/"
+publishTo := Some("Artifactory Realm" at "https://artifactory.cerno.dk/artifactory/cerno;build.timestamp=" + new java.util.Date().getTime)
 
 licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT"))
 
